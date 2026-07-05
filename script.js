@@ -6,15 +6,15 @@ function closeChat() {
   document.getElementById("chatBox").style.display = "none";
 }
 
-async function sendMessage() {
+function sendMessage() {
   let input = document.getElementById("userInput");
-  let text = input.value;
+  let text = input.value.trim().toLowerCase();
 
-  if (text.trim() === "") return;
+  if (text === "") return;
 
   let chatBody = document.getElementById("chatBody");
 
-  // عرض رسالة المستخدم
+  // رسالة المستخدم
   let userMsg = document.createElement("p");
   userMsg.textContent = "You: " + text;
   userMsg.style.textAlign = "right";
@@ -22,50 +22,40 @@ async function sendMessage() {
 
   input.value = "";
 
-  // رسالة تحميل
-  let loadingMsg = document.createElement("p");
-  loadingMsg.textContent = "AI is typing...";
-  loadingMsg.style.color = "gray";
-  chatBody.appendChild(loadingMsg);
+  // ردود خدمة العملاء
+  let reply = "";
+
+  if (text.includes("hello") || text.includes("hi")) {
+    reply = "Hello 👋 Welcome to My Flex Health Support. How can I help you today?";
+  }
+
+  else if (text.includes("price") || text.includes("cost")) {
+    reply = "Our services pricing depends on your needs. Please contact our support team via WhatsApp for details.";
+  }
+
+  else if (text.includes("service")) {
+    reply = "We offer AI health guidance, fitness support, and customer assistance services.";
+  }
+
+  else if (text.includes("contact")) {
+    reply = "You can contact us anytime via WhatsApp or the contact form below.";
+  }
+
+  else if (text.includes("problem") || text.includes("issue")) {
+    reply = "Sorry for the inconvenience 😔 Please share your issue and our team will assist you shortly.";
+  }
+
+  else {
+    reply = "Thank you for your message 🙏 Our support team will get back to you soon. You can also contact us on WhatsApp for faster response.";
+  }
+
+  // عرض الرد
+  let botMsg = document.createElement("p");
+  botMsg.textContent = "Support: " + reply;
+  botMsg.style.color = "green";
+  chatBody.appendChild(botMsg);
 
   chatBody.scrollTop = chatBody.scrollHeight;
-
-  try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer YOUR_API_KEY_HERE"
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "You are a helpful health assistant." },
-          { role: "user", content: text }
-        ]
-      })
-    });
-
-    const data = await response.json();
-
-    let reply = data.choices[0].message.content;
-
-    loadingMsg.remove();
-
-    let botMsg = document.createElement("p");
-    botMsg.textContent = "AI: " + reply;
-    botMsg.style.color = "green";
-
-    chatBody.appendChild(botMsg);
-
-    chatBody.scrollTop = chatBody.scrollHeight;
-
-  } catch (error) {
-    loadingMsg.remove();
-
-    let errorMsg = document.createElement("p");
-    errorMsg.textContent = "AI: Error connecting to server.";
-    errorMsg.style.color = "red";
-    chatBody.appendChild(errorMsg);
-  }
 }
+
+Write to
