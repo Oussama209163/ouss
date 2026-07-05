@@ -1,0 +1,6 @@
+{
+  "name": "My Flex Health Customer Care Assistant",
+  "description": "A professional, polite, and empathetic Customer Care Assistant for My Flex Health Malaysia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
